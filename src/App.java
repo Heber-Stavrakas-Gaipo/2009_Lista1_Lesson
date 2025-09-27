@@ -9,6 +9,11 @@ public class App {
         int option = 0;
         int option2 = 0;
         int stopCondition = 0;
+        int counter = 0;
+        System.out.println("Digite a quantidade de emprestimos que deseja fazer: ");
+        qttdEmprestimos = reader.nextInt();
+        reader.nextLine();
+        emprestimos = new Emprestimo[qttdEmprestimos];
         do {
             System.out.println("-------------------------------");
             System.out.println(
@@ -17,16 +22,12 @@ public class App {
             reader.nextLine();
             switch (option) {
                 case 1: {
-                    System.out.println("Digite a quantidade de emprestimos que deseja fazer: ");
-                    qttdEmprestimos = reader.nextInt();
-                    reader.nextLine();
-                    emprestimos = new Emprestimo[qttdEmprestimos];
-                    for (int i = 0; i < qttdEmprestimos; i++) {
-                        emprestimos[i] = new Emprestimo();
-                        System.out.println("Digite a data do emprestimo " + (i + 1) + ":");
-                        emprestimos[i].data = reader.next();
+                    if (counter < qttdEmprestimos) {
+                        Emprestimo objeto = new Emprestimo();
+                        System.out.println("Digite a data do emprestimo:");
+                        objeto.data = reader.next();
                         System.out.println("Digite o nome do cliente: ");
-                        emprestimos[i].cliente = reader.next();
+                        objeto.cliente = reader.next();
                         reader.nextLine();
                         int controller = 0;
                         do {
@@ -39,9 +40,9 @@ public class App {
                             float valor = reader.nextFloat();
                             reader.nextLine();
                             Midia midia = new Midia(tipo, descricao, valor);
-                            emprestimos[i].midias[stopCondition] = midia;
-                            emprestimos[i].midias[stopCondition].alterarStatus();
-                            emprestimos[i].midias[stopCondition].retornaDados();
+                            objeto.midias[stopCondition] = midia;
+                            objeto.midias[stopCondition].alterarStatus();
+                            objeto.midias[stopCondition].retornaDados();
                             controller++;
                             System.out.println("Deseja cadastrar mais uma midia?\n1 - Sim;\n2 - Nao;");
                             option2 = reader.nextInt();
@@ -50,6 +51,11 @@ public class App {
                                 System.out.println("Não e possivel registrar mais midias!");
                             }
                         } while (option2 != 2 && stopCondition < 5);
+                        emprestimos[counter] = objeto;
+                        counter++;
+                    } else {
+                        System.out.println("Emprestimos cadastrados: " + counter + " de " + qttdEmprestimos);
+                        System.out.println("Não existem mais emprestimos a serem cadastrados!");
                     }
                 }
                     break;
@@ -58,6 +64,7 @@ public class App {
                     for (int i = 0; i < emprestimos.length; i++) {
                         System.out.print((i + 1) + " | ");
                     }
+                    System.out.print("\n");
                     option = reader.nextInt();
                     if (emprestimos[option - 1] != null) {
                         emprestimos[option - 1].impressaoDados();
